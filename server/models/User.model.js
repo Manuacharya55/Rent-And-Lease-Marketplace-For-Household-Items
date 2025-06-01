@@ -32,6 +32,14 @@ const UserSchema = new Schema({
       },
     ],
     ref: "Product",
+  },products: {
+    type: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
+    ref: "Product",
   },
   address: {
     type: Schema.Types.ObjectId,

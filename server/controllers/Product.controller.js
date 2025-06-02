@@ -1,8 +1,11 @@
 import Product from "../models/Product.model";
 import User from "../models/User.model";
+import { ApiError } from "../utils/ApiError";
+import { ApiSuccess } from "../utils/ApiSuccess";
+import { asyncHandler } from "../utils/AsyncHandler";
 
 // get all products
-export const getAllProducts = async (req, res) => {
+export const getAllProducts = asyncHandler(async (req, res) => {
   const page = 1 || Number(req.query.page);
   const category = "" || req.query.category;
   const price = "" || Number(req.query.price);
@@ -16,50 +19,42 @@ export const getAllProducts = async (req, res) => {
     .limit(10)
     .skip(page - 1 * 10);
 
-  res.send({
-    success: true,
-    message: "All Products Fetched Successfully",
-    data: products,
-  });
-};
+  res.send(new ApiSuccess(200, true, "Products Fetched Successfully", products));
+});
 
 // get user specific products
-export const getUserSpecificProducts = async (req, res) => {
+export const getUserSpecificProducts = asyncHandler(async (req, res) => {
   const { _id } = req.user;
 
   const existingUser = await User.findById(_id);
 
   if (!existingUser) {
-    throw new Error();
+    throw new ApiError(400, "User Not Found");
   }
 
   const products = await Product.find({ user: _id });
 
-  res.send({
-    success: true,
-    message: "Product Fetched Successfully",
-    data: products,
-  });
-};
+  res.send(new ApiSuccess(200, true, "Single Product Fetched Successfully", products));
+});
 
 // add products
 // check whether the category exists once after completing admin side
-export const addProduct = async (req, res) => {
+export const addProduct = asyncHandler(async (req, res) => {
   const { name, category, price, images, description } = req.body;
   const { _id } = req.user;
 
   if (!name || !category || !price || !description) {
-    throw new Error();
+    throw new ApiError(400, "All Fields are required");
   }
 
   if (images.length !== 4) {
-    throw new Error();
+    throw new ApiError(400, "Please provide 4 images");
   }
 
   const existingUser = await User.findById(_id);
 
   if (!existingUser) {
-    throw new Error();
+    throw new ApiError(400, "User Not Found");
   }
 
   const product = await Product.create({
@@ -71,54 +66,46 @@ export const addProduct = async (req, res) => {
     images,
   });
 
-  res.send({
-    success: true,
-    message: "€product added successfully",
-    data: product,
-  });
-};
+  res.send(new ApiSuccess(201, true, "Product Added Successfully", product));
+});
 
 // get single product
-export const getSingleProduct = async (req, res) => {
+export const getSingleProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const existingProduct = await Product.findById(id);
 
   if (!existingProduct) {
-    throw new Error();
+    throw new ApiError(400, "Product Not Found");
   }
 
-  res.send({
-    success: true,
-    message: "Product Fteched Successfully",
-    data: existingProduct,
-  });
-};
+  res.send(new ApiSuccess(200, true, "Single Product Fetched Successfully", existingProduct));
+});
 
 // edit product
-export const editProduct = async (req, res) => {
+export const editProduct = asyncHandler(async (req, res) => {
   const { name, category, price, images, description } = req.body;
   const { _id } = req.user;
   const { id } = req.params;
 
   if (!name || !category || !price || !description) {
-    throw new Error();
+    throw new ApiError(400, "All Fields are required");
   }
 
   if (images.length !== 4) {
-    throw new Error();
+    throw new ApiError(400, "Please provide 4 images");
   }
 
   const existingUser = await User.findById(_id);
 
   if (!existingUser) {
-    throw new Error();
+    throw new ApiError(400, "User Not Found");
   }
 
   const existingProduct = await Product.findById(id);
 
   if (!existingProduct || existingProduct.user !== _id) {
-    throw new Error();
+    throw new ApiError(400, "Product Not Found or Unauthorized Access");
   }
 
   const product = await Product.findByIdAndUpdate(
@@ -136,15 +123,11 @@ export const editProduct = async (req, res) => {
     { new: true }
   );
 
-  res.send({
-    success: true,
-    message: "Product updated successfully",
-    data: product,
-  });
-};
+  res.send(new ApiSuccess(200, true, "Product Updated Successfully", product));
+});
 
 // delete product
-export const deleteProduct = async(req,res) =>{
+export const deleteProduct = asyncHandler(async(req,res) =>{
   const {id} = req.params;
   const {_id} = req.user;
 
@@ -152,15 +135,11 @@ export const deleteProduct = async(req,res) =>{
   const existingProduct = await Product.findById(id);
 
   if(!existingUser || !existingProduct || existingProduct.user !== id ){
-    throw new Error();
+    throw new ApiError(400, "Product Not Found or Unauthorized Access");
   }
 
   existingProduct.isActive = !existingProduct.isActive;
   const result = await existingProduct.save();
 
-  res.send({
-    success : true,
-    message : "Product Deleted Successfully",
-    data : result
-  })
-}
+  res.send(new ApiSuccess(200, true, "Product Deleted Successfully", result));
+});

@@ -1,7 +1,8 @@
-import User from "../models/User.model";
-import { ApiError } from "../utils/ApiError";
-import { ApiSuccess } from "../utils/ApiSuccess";
-import { asyncHandler } from "../utils/AsyncHandler";
+import User from "../models/User.model.js";
+import Product from "../models/Product.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiSuccess } from "../utils/ApiSuccess.js";
+import { asyncHandler } from "../utils/AsyncHandler.js";
 
 // Register user
 export const registerUser = asyncHandler(async (req, res) => {
@@ -49,7 +50,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 
   const token = existingUser.generateToken();
 
-  res.json(new ApiSuccess(201,true,"Logged In Successfully",existingUser),token);
+  res.json(new ApiSuccess(201,true,"Logged In Successfully",{user : existingUser,token}));
 });
 
 // Get profile

@@ -1,23 +1,23 @@
-import Product from "../models/Product.model";
-import User from "../models/User.model";
-import { ApiError } from "../utils/ApiError";
-import { ApiSuccess } from "../utils/ApiSuccess";
-import { asyncHandler } from "../utils/AsyncHandler";
+import Product from "../models/Product.model.js";
+import User from "../models/User.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiSuccess } from "../utils/ApiSuccess.js";
+import { asyncHandler } from "../utils/AsyncHandler.js";
 
 // get all products
 export const getAllProducts = asyncHandler(async (req, res) => {
-  const page = 1 || Number(req.query.page);
-  const category = "" || req.query.category;
-  const price = "" || Number(req.query.price);
+ const page = Number(req.query.page) || 1;
+  const category = req.query.category;
+  const price = Number(req.query.price);
 
-  const query = {
-    category,
-    price,
-  };
+  const query = {};
+  if (category) query.category = category;
+  if (price) query.price = price;
 
   const products = await Product.find(query)
     .limit(10)
-    .skip(page - 1 * 10);
+    .skip((page - 1) * 10);
+
 
   res.send(new ApiSuccess(200, true, "Products Fetched Successfully", products));
 });
@@ -41,7 +41,7 @@ export const getUserSpecificProducts = asyncHandler(async (req, res) => {
 // check whether the category exists once after completing admin side
 export const addProduct = asyncHandler(async (req, res) => {
   const { name, category, price, images, description } = req.body;
-  const { _id } = req.user;
+  const { _id } = req.user || req.body;
 
   if (!name || !category || !price || !description) {
     throw new ApiError(400, "All Fields are required");

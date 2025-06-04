@@ -1,9 +1,10 @@
 export const GlobalErrorHandler = (err,req,res,next)=>{
     const statuscode = err.statuscode || 500;
-    const success = err.success;
-    const message = err.message;
-    const data = err.data;
+    const success = err.success || false;
+    const message = err.message || "Internal Server Error";
+    const data = err.data || [];
 
+    console.error("global error handler",err);
     res.status(statuscode).json({
         statuscode,
         success,

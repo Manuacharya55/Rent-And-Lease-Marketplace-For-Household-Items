@@ -12,6 +12,7 @@ const UserSchema = new Schema({
     type: Number,
     required: true,
     trim: true,
+    unique: true,
   },
   email: {
     type: String,
@@ -32,7 +33,8 @@ const UserSchema = new Schema({
       },
     ],
     ref: "Product",
-  },products: {
+  },
+  products: {
     type: [
       {
         type: Schema.Types.ObjectId,
@@ -74,10 +76,10 @@ UserSchema.methods.generateToken = function () {
   );
 };
 
-UserSchema.methods.comparePassword = async function(password){
-   const isMatch = await bcrypt.compare(password,this.password)
-   return isMatch
-}
+UserSchema.methods.comparePassword = async function (password) {
+  const isMatch = await bcrypt.compare(password, this.password);
+  return isMatch;
+};
 
 const User = model("User", UserSchema);
 export default User;

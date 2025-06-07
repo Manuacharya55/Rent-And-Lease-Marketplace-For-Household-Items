@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import User from "../models/User.model";
-import { asyncHandler } from "../utils/AsyncHandler";
-import { ApiError } from "../utils/ApiError";
+import User from "../models/User.model.js";
+import { asyncHandler } from "../utils/AsyncHandler.js";
+import { ApiError } from "../utils/ApiError.js";
 
 
 export const verifyUser = asyncHandler(async (req, res, next) => {
@@ -12,6 +12,7 @@ export const verifyUser = asyncHandler(async (req, res, next) => {
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
   const user = await User.findById(decoded._id);
 
   if (!user) {
@@ -23,9 +24,8 @@ export const verifyUser = asyncHandler(async (req, res, next) => {
 });
 
 export const verifyAdmin = asyncHandler(async (req, res, next) => {
-  const role = "admin";
 
-  if (req.user.role !== role) {
+  if (req.user.isAdmin !== true) {
     throw new ApiError(400, `You are not ${role} to access this route`);
   }
   next();

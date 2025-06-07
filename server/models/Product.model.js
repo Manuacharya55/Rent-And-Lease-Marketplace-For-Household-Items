@@ -32,7 +32,7 @@ const ProductSchema = new Schema({
     },
     isActive:{
         type:Boolean,
-        default:false
+        default:true
     },
     rentedDates:[{
         type:Date

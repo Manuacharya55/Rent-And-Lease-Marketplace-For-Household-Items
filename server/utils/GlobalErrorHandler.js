@@ -4,7 +4,6 @@ export const GlobalErrorHandler = (err,req,res,next)=>{
     const message = err.message || "Internal Server Error";
     const data = err.data || [];
 
-    console.error("global error handler",err);
     res.status(statuscode).json({
         statuscode,
         success,

@@ -7,14 +7,14 @@ addProduct,
 deleteProduct,
 editProduct
 } from '../controllers/Product.controller.js';
+import { verifyUser } from '../middleware/Auth.midddleware.js';
 
 const router = express.Router();
 
-router.get('/', getAllProducts);
-router.post('/', addProduct);
-// router.get('/user/:id', getUserSpecificProducts);
-router.put('/:id', getSingleProduct);
-router.put('/:id', editProduct);
-router.delete('/:id', deleteProduct);
+router.get('/',verifyUser ,getAllProducts);
+router.post('/',verifyUser ,addProduct);
+router.get('/:id',verifyUser ,getSingleProduct);
+router.patch('/:id',verifyUser ,editProduct);
+router.delete('/:id',verifyUser ,deleteProduct);
 
 export default router;

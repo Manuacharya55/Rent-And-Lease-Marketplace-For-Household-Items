@@ -1,0 +1,70 @@
+/* ----------------------button styling-------------------------------- */
+button {
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 25px;
+  color: var(--text-color);
+  background-color: var(--main-color);
+  transition: all ease 0.5s;
+}
+
+button:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+}
+
+
+/* ----------------------input styling-------------------------------- */
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 25px;
+  border: 1px solid var(--text-color);
+  background-color: transparent;
+  color: var(--text-color);
+}
+
+input::placeholder{
+  color: white;
+  text-transform: capitalize;
+}
+
+input:focus {
+  border: none;
+  outline: 2px solid var(--hover-color);
+}
+
+h1{
+  color: white;
+  font-size: 3rem;
+}
+
+/* ----------------------checkbox styling-------------------------------- */
+#checkbox {
+  width: 100%;
+  padding: 10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
+input[type="checkbox"]:checked {
+  background-image: url("https://static.vecteezy.com/system/resources/previews/006/059/254/non_2x/black-check-mark-icon-tick-symbol-in-black-color-illustration-for-web-mobile-and-concept-design-free-vector.jpg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+label {
+  margin-left: 5px;
+  font-size: 20px;
+  text-transform: capitalize;
+}

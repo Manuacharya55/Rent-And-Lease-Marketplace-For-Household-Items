@@ -42,7 +42,7 @@ export const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid Credentials");
   }
 
-  const isMatch = existingUser.comparePassword(password);
+  const isMatch = await existingUser.comparePassword(password);
 
   if (!isMatch) {
     throw new ApiError(400, "Invalid Credentials");

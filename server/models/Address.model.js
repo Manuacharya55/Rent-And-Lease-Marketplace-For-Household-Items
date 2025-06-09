@@ -6,6 +6,11 @@ const AddressSchema = new Schema(
       ref: "User",
       required: true,
     },
+    address: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     city: {
       type: String,
       required: true,

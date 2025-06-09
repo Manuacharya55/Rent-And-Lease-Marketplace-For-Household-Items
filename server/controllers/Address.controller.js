@@ -5,10 +5,11 @@ import { asyncHandler } from "../utils/AsyncHandler.js";
 
 // Add Address Controller
 export const addAddress = asyncHandler(async (req, res) => {
-  const { city, state, zipCode, country, coordinates } = req.body;
+  const { city, state, zipCode, country, coordinates,address } = req.body;
   const user = req.user._id;
 
   if (
+    !address||
     !city ||
     !state ||
     !zipCode ||
@@ -32,8 +33,9 @@ export const addAddress = asyncHandler(async (req, res) => {
     throw new ApiError(400, "User already has an address");
   }
 
-  const address = await Address.create({
+  const userAddress = await Address.create({
     user,
+    address,
     city,
     state,
     zipCode,
@@ -43,15 +45,16 @@ export const addAddress = asyncHandler(async (req, res) => {
 
   res
     .status(201)
-    .json(new ApiSuccess(201, true, "Address added successfully", address));
+    .json(new ApiSuccess(201, true, "Address added successfully", userAddress));
 });
 
 // Update Address Controller
 export const updateAddress = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { city, state, zipCode, country, coordinates } = req.body;
+  const { city, state, zipCode, country, coordinates ,address} = req.body;
 
   if (
+    !address||
     !city ||
     !state ||
     !zipCode ||
@@ -76,11 +79,11 @@ export const updateAddress = asyncHandler(async (req, res) => {
     },
   };
 
-  const address = await Address.findByIdAndUpdate(id, updatedData, {
+  const userAddress = await Address.findByIdAndUpdate(id, updatedData, {
     new: true,
   });
 
-  if (!address) {
+  if (!userAddress) {
     throw new ApiError(404, "Address not found");
   }
 

@@ -1,6 +1,6 @@
 import "./style.css";
 
-const Input = ({ type, event, value, placeholder,name }) => {
+const Input = ({ type, event=()=>{}, value, placeholder,name }) => {
   return (
     <input
       type={type}

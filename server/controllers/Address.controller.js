@@ -1,17 +1,36 @@
 import Address from "../models/Address.model.js";
+import User from "../models/User.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiSuccess } from "../utils/ApiSuccess.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 
+// Fetch user address
+export const fetchAddress = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+
+  const existingUser = await User.findById(_id);
+  const existingAddress = await Address.findOne({ user: _id });
+
+  if (!existingAddress || !existingUser) {
+    throw new ApiError(400, "No Data Found");
+  }
+
+  res.json(
+    new ApiSuccess(200, true, "Address Fetched Successfully", existingAddress)
+  );
+});
+
 // Add Address Controller
 export const addAddress = asyncHandler(async (req, res) => {
-  const { city, state, zipCode, country, coordinates,address } = req.body;
+  const { city, state, zipCode, country, coordinates, address, district } =
+    req.body;
   const user = req.user._id;
 
   if (
-    !address||
+    !address ||
     !city ||
     !state ||
+    !district ||
     !zipCode ||
     !country ||
     !coordinates ||
@@ -37,6 +56,7 @@ export const addAddress = asyncHandler(async (req, res) => {
     user,
     address,
     city,
+    district,
     state,
     zipCode,
     country,
@@ -51,12 +71,13 @@ export const addAddress = asyncHandler(async (req, res) => {
 // Update Address Controller
 export const updateAddress = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { city, state, zipCode, country, coordinates ,address} = req.body;
+  const { city, state,district, zipCode, country, coordinates, address } = req.body;
 
   if (
-    !address||
+    !address ||
     !city ||
     !state ||
+    !district ||
     !zipCode ||
     !country ||
     !coordinates ||
@@ -70,6 +91,7 @@ export const updateAddress = asyncHandler(async (req, res) => {
 
   const updatedData = {
     city,
+    district,
     state,
     zipCode,
     country,
@@ -89,5 +111,5 @@ export const updateAddress = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(new ApiSuccess(200, true, "Address updated successfully", address));
+    .json(new ApiSuccess(200, true, "Address updated successfully", userAddress));
 });

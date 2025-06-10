@@ -10,7 +10,6 @@ const Map = ({ setAddress, setCoordinates, coordinates }) => {
   const setLocation = () => {
     const success = (location) => {
       const { latitude, longitude } = location.coords;
-      console.log(latitude, longitude);
       setCoordinates([latitude, longitude]);
       setLoading(false);
     };

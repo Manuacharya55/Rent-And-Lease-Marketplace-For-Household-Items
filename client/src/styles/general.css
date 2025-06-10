@@ -33,8 +33,10 @@ body,
   backdrop-filter: blur(20px);
 
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+
 }
 
 #login {
@@ -61,4 +63,18 @@ a{
     text-decoration: none;
     color: var(--text-color);
     text-align: left;
+}
+
+
+#product-grid{
+  display: grid;
+  grid-template-columns: 300px 300px;
+  grid-template-rows: 50px 50px;
+  gap: 15px;
+}
+
+#image-grid{
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 20px;
 }

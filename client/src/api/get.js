@@ -12,6 +12,6 @@ export const getRequest = async (URL, token) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    return error;
+    return error.response.data;
   }
 };

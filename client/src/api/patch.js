@@ -1,16 +1,16 @@
 import axios from "axios";
 
-export const patchRequest = async (URL, data, token) => {
+export const patchRequest = async (URL,id, data, token) => {
   try {
-    const response = await axios.post(URL, data, {
+    const response = await axios.patch(URL+id, data, {
       headers: {
         "Content-Type": "application/json",
         "auth-token": token,
       },
     });
-    return response;
+    return response.data;
   } catch (error) {
     console.log(error);
-    return error;
+    return error.response.data;
   }
 };

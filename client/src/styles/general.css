@@ -75,6 +75,12 @@ a{
 
 #image-grid{
   display: grid;
+  padding: 20px 0px;
   grid-template-columns: auto auto auto auto;
   gap: 20px;
+}
+
+#btn-holder{
+  max-width: 800px;
+  width: 100%;
 }

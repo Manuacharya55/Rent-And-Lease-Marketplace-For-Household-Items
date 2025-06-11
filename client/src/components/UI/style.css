@@ -16,7 +16,7 @@ button:hover {
 
 
 /* ----------------------input styling-------------------------------- */
-input {
+input,select {
   width: 100%;
   padding: 10px;
   border-radius: 25px;
@@ -30,7 +30,7 @@ input::placeholder{
   text-transform: capitalize;
 }
 
-input:focus {
+input:focus ,select:focus {
   border: none;
   outline: 2px solid var(--hover-color);
 }
@@ -69,6 +69,13 @@ label {
   text-transform: capitalize;
 }
 
+select{
+  background-color: transparent;
+}
+
+option{
+  color: rgb(0, 0, 0);
+}
 /* -------------------------------- custom image upload ----------------------------- */
 #image-upload{
   width: 150px;
